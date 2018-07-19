@@ -37,11 +37,26 @@ public class UseCameraActivity extends AppCompatActivity {
 
     public void onCameraImageClick(View view) {
 
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            ActivityCompat.requestPermissions(this, permissions, 2000);
+            return;
+        }
 
-        startActivityForResult(intent, 200);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        Date now = new Date(System.currentTimeMillis());
+        String nowStr = dateFormat.format(now);
+        String fileName = "UseCameraActivityPhoto_" + nowStr +".jpg";
+
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, fileName);
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+
+        ContentResolver resolver = getContentResolver();
+        _imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
     }
     public class UseCameraActivity extends AppCompatActivity{
-        private Url _imageUrl;
+        private Uri _imageUri;
     }
     }
