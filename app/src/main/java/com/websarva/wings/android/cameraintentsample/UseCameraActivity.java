@@ -29,11 +29,9 @@ public class UseCameraActivity extends AppCompatActivity {
 
         if(requestCode == 200 && resultCode == RESULT_OK) {
 
-            Bitmap bitmap = data.getParcelableArrayExtra("data");
-
             ImageView ivCamera = findViewById(R.id.ivCamera);
 
-            ivCamera.setImageBitmap(bitmap);
+            ivCamera.setImageBitmap(_imageUri);
         }
     }
 
@@ -42,5 +40,8 @@ public class UseCameraActivity extends AppCompatActivity {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         startActivityForResult(intent, 200);
+    }
+    public class UseCameraActivity extends AppCompatActivity{
+        private Url _imageUrl;
     }
     }
